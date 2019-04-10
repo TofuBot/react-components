@@ -18,11 +18,11 @@ const Dropdown = props => {
   const {
     children,
     isOpen,
-    onOpen,
     selectedItem,
     selectedItems,
-    onSelect,
     highlightedIndex,
+    onOpen,
+    onSelect,
     onHighlight,
     dropdownProps
   } = props;
@@ -93,10 +93,10 @@ const Dropdown = props => {
   return (
     <Manager>
       <Downshift
-        suppressRefError
+        suppressRefError // https://github.com/downshift-js/downshift/issues/529 Allows us to provide props through context
         isOpen={isOpen}
-        selectedItem={selectedItem || null}
         highlightedIndex={highlightedIndex}
+        selectedItem={selectedItem || null} // Ensures that selectedItem never becomes controlled by Downshift
         onStateChange={(changes, stateAndHelpers) => {
           if (Object.prototype.hasOwnProperty.call(changes, 'isOpen')) {
             onOpen && onOpen(changes.isOpen, stateAndHelpers);
@@ -157,13 +157,12 @@ const Dropdown = props => {
 Dropdown.propTypes = {
   children: PropTypes.node,
   isOpen: PropTypes.bool,
-  onOpen: PropTypes.func,
   selectedItem: PropTypes.any,
   selectedItems: PropTypes.arrayOf(PropTypes.any),
-  onSelect: PropTypes.func,
   highlightedIndex: PropTypes.number,
+  onOpen: PropTypes.func,
+  onSelect: PropTypes.func,
   onHighlight: PropTypes.func,
-  itemToString: PropTypes.func,
   dropdownProps: PropTypes.object
 };
 
